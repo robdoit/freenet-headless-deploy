@@ -1,0 +1,21 @@
+name: Package Release Bundle
+
+on:
+  workflow_dispatch:
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run unit tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Build release zip
+        run: make bundle
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: freenet-headless-deploy
+          path: dist/freenet-headless-deploy.zip
